@@ -8,19 +8,19 @@ internal class Program
     {
         ThreadPool.QueueUserWorkItem(ThreadProc);
         
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 12; i++)
         {
-            await ReadFile(i);
+            await CreateFile(i);
         }
         
         Console.WriteLine("Continuation du traitement");
     }
+    
     async static void ThreadProc(Object stateInfo) 
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 12; i++)
         {
-            await CreateFile(i);
-
+            await ReadFile(i);
         }
     }
 
