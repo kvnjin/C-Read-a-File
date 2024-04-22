@@ -6,16 +6,22 @@ internal class Program
 
     private async static Task Main(string[] args)
     {
-        for (int i = 0; i < 2; i++)
-        {
-            await CreateFile(i);
-        }
+        ThreadPool.QueueUserWorkItem(ThreadProc);
+        
         for (int i = 0; i < 2; i++)
         {
             await ReadFile(i);
+        }
+        
+        Console.WriteLine("Continuation du traitement");
+    }
+    async static void ThreadProc(Object stateInfo) 
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            await CreateFile(i);
 
         }
-        Console.WriteLine("Continuation du traitement");
     }
 
     private async static Task ReadFile(int a){
@@ -44,7 +50,7 @@ internal class Program
         using (FileStream fs = File.Create(@$"Test{a}.txt"))
         using (StreamWriter sw = new StreamWriter(fs))
         {
-            for (int i = 0; i < 99000; i++){
+            for (int i = 0; i < 990; i++){
                 await sw.WriteLineAsync($"Fichier{a} Line {i}");
             }
         }
