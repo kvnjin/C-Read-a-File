@@ -6,22 +6,28 @@ internal class Program
 
     private async static Task Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        await CreateFile();        
-        await ReadFile();
+        for (int i = 0; i < 2; i++)
+        {
+            await CreateFile(i);
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            await ReadFile(i);
+
+        }
         Console.WriteLine("Continuation du traitement");
     }
 
-    private async static Task ReadFile(){
+    private async static Task ReadFile(int a){
     Console.WriteLine("Début de la lecture du fichier");
 
-    using (StreamReader sr = new StreamReader(@"Test.txt"))
+    using (StreamReader sr = new StreamReader(@$"Test{a}.txt"))
     {
         string line;
-        
+
         while ((line = await sr.ReadLineAsync()) != null)
         {
-            if (line.Contains("2"))
+            if (line.Contains("4"))
             {
                 Console.WriteLine(line); 
             }
@@ -32,14 +38,14 @@ internal class Program
     Console.WriteLine("Fin de la lecture du fichier");
 }
 
-    private async static Task CreateFile(){
+    private async static Task CreateFile(int a){
         Console.WriteLine("Début de la création et écriture dans un fichier");
         
-        using (FileStream fs = File.Create(@"Test.txt"))
+        using (FileStream fs = File.Create(@$"Test{a}.txt"))
         using (StreamWriter sw = new StreamWriter(fs))
         {
             for (int i = 0; i < 99000; i++){
-                await sw.WriteLineAsync($"Line {i}");
+                await sw.WriteLineAsync($"Fichier{a} Line {i}");
             }
         }
         Console.WriteLine("Fin de l'écriture dans le fichier");
